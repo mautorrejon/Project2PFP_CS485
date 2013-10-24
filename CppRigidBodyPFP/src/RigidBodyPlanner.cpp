@@ -43,7 +43,7 @@ RigidBodyMove RigidBodyPlanner::ConfigurationMove(void)
 	double scale_cs = .025;
 	double scale_att = .1; //arbitrarily chosen
 	double scale_rep = 3;
-	double threshold = 1.0; //arbitrarily chosen threshold distance for Urep
+	double threshold = 0.5; //arbitrarily chosen threshold distance for Urep
 	srand(time(NULL)); //seed random number generator to spike uRep after sufficient amount of time
 	double spike = 20.0; //amplifies uRep at random while near obstacles
 	int chance = 10; //changes probability of "spiking" uRep
@@ -85,26 +85,31 @@ RigidBodyMove RigidBodyPlanner::ConfigurationMove(void)
 			double obs_dist = sqrt(pow(xdist,2) + pow(ydist,2));
 			//printf("\nobs_dist = %f",obs_dist);
 			
-			if(obs_dist < threshold) //if the obstacle is close enough, 
+			if(obs_dist < threshold) //if the obstacle is close enough, calc a repelling force for it
 			{
+				//set scale_rep based on distance
+				scale_rep = 2/pow(obs_dist,2);
+
+				scale_cs = .025*pow(obs_dist,2);
+
 				uRep[0] += xdist*scale_rep;
 				uRep[1] += ydist*scale_rep;
 
-				if(rand()%chance==0) //add normal vector with large magnitude to uRep
+				if(rand()%chance==0) //add orthogonal vector with large magnitude to uRep
 				{
 					double temp = uRep[0];
-					double xAdd = -uRep[1]*spike;
-					double yAdd = temp*spike;
-					if(rand()%2==0) //
+					double orth_x = -uRep[1]*spike;
+					double orth_y = temp*spike;
+					if(rand()%2==0) //make the normal vector point in the opposite direction half the time
 					{
-						xAdd = -xAdd;
-						yAdd = -yAdd;
+						orth_x = -orth_x;
+						orth_y = -orth_y;
 					}
 
-					uRep[0] += xAdd;
-					uRep[1] += yAdd;
+					uRep[0] += orth_x;
+					uRep[1] += orth_y;
 				}
-								
+
 				//spike = 1; //reset spike value
 
 				printf("\nspike = %f",spike);
