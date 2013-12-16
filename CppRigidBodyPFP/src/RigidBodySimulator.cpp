@@ -10,6 +10,7 @@ RigidBodySimulator::RigidBodySimulator(void)
 
 RigidBodySimulator::~RigidBodySimulator(void)
 {
+	//COMMENT!!!
 }
 
 Point RigidBodySimulator::ClosestPointOnObstacle(const int i, const double x, const double y)
