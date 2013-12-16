@@ -33,6 +33,7 @@ RigidBodyMove RigidBodyPlanner::ConfigurationMove(void)
 	double gx = m_simulator->GetGoalCenterX();
 	double gy = m_simulator->GetGoalCenterY();
 	int obs = m_simulator->GetNrObstacles();
+	//COMMENT!!!
 	
 	double scale_cs = .025;
 	double scale_att = .1; //arbitrarily chosen
