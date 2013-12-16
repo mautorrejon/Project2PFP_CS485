@@ -74,7 +74,7 @@ void RigidBodySimulator::ReadRobot(const char fname[])
 	    else
 		printf("%d ", m_robot.m_triangles[i]);
 	printf("\n...done with tris\n");
-	
+	//comment!!!!
     
   
 	m_robot.m_initVertices.assign(m_robot.m_currVertices.begin(),
